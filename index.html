@@ -1,0 +1,572 @@
+
+<style>
+@import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&family=Space+Grotesk:wght@500;600;700&display=swap');
+
+:root{
+  --bg-main:#eef6f4;
+  --bg-surface:#ffffff;
+  --bg-muted:#f4faf8;
+  --text-primary:#112721;
+  --text-secondary:#4f675f;
+  --text-tertiary:#7b8f88;
+  --border:#d4e4df;
+  --border-strong:#9fbeb6;
+  --accent:#0f766e;
+  --shadow:0 24px 48px -32px rgba(20,48,41,.42);
+}
+
+*{box-sizing:border-box;margin:0;padding:0}
+
+.root{
+  position:relative;
+  max-width:1200px;
+  margin:14px auto;
+  padding:1.25rem;
+  border-radius:28px;
+  background:linear-gradient(140deg,#f8fcfb 0%,var(--bg-main) 100%);
+  border:1px solid #d8e8e3;
+  box-shadow:var(--shadow);
+  font-family:"DM Sans","Segoe UI",sans-serif;
+  color:var(--text-primary);
+  overflow:hidden;
+}
+.root::before,.root::after{
+  content:"";
+  position:absolute;
+  border-radius:50%;
+  pointer-events:none;
+}
+.root::before{
+  width:260px;
+  height:260px;
+  background:radial-gradient(circle at center,rgba(15,118,110,.19) 0%,rgba(15,118,110,0) 70%);
+  top:-90px;
+  right:-80px;
+}
+.root::after{
+  width:240px;
+  height:240px;
+  background:radial-gradient(circle at center,rgba(249,115,22,.16) 0%,rgba(249,115,22,0) 72%);
+  left:-90px;
+  bottom:-120px;
+}
+
+.header{
+  position:relative;
+  display:flex;
+  justify-content:space-between;
+  align-items:flex-end;
+  gap:12px;
+  padding:16px 18px;
+  margin-bottom:1rem;
+  border:1px solid var(--border);
+  border-radius:20px;
+  background:rgba(255,255,255,.86);
+  backdrop-filter:blur(6px);
+  animation:rise .45s ease both;
+}
+.header h1{
+  font-family:"Space Grotesk","Trebuchet MS",sans-serif;
+  font-size:clamp(1.35rem,2.1vw,2rem);
+  font-weight:700;
+  color:var(--text-primary);
+  letter-spacing:-.55px;
+}
+.header p{
+  font-size:.95rem;
+  color:var(--text-secondary);
+  margin-top:6px;
+}
+.header-tag{
+  border:1px solid #c7ddd8;
+  background:linear-gradient(120deg,#effaf7 0%,#f9f3ea 100%);
+  border-radius:999px;
+  padding:7px 12px;
+  font-size:.72rem;
+  font-weight:700;
+  letter-spacing:.08em;
+  text-transform:uppercase;
+  color:#20564f;
+  white-space:nowrap;
+}
+
+.stats-row{
+  display:grid;
+  grid-template-columns:repeat(4,minmax(120px,1fr));
+  gap:10px;
+  margin-bottom:1rem;
+  animation:rise .5s .08s ease both;
+}
+.stat{
+  background:var(--bg-surface);
+  border:1px solid var(--border);
+  border-radius:16px;
+  padding:12px 14px;
+  min-height:76px;
+  display:flex;
+  flex-direction:column;
+  justify-content:center;
+  position:relative;
+  overflow:hidden;
+}
+.stat::before{
+  content:"";
+  position:absolute;
+  inset:0 auto auto 0;
+  width:100%;
+  height:3px;
+  background:linear-gradient(90deg,var(--accent) 0%,#f97316 100%);
+  opacity:.45;
+}
+.stat-num{
+  font-size:1.5rem;
+  font-weight:700;
+  line-height:1.1;
+  color:var(--text-primary);
+}
+.stat-label{
+  font-size:.72rem;
+  color:var(--text-tertiary);
+  margin-top:2px;
+  text-transform:uppercase;
+  letter-spacing:.07em;
+}
+
+.content-layout{
+  display:grid;
+  grid-template-columns:minmax(280px,345px) 1fr;
+  gap:12px;
+  align-items:start;
+}
+
+.weeks-panel{
+  background:var(--bg-surface);
+  border:1px solid var(--border);
+  border-radius:18px;
+  padding:12px;
+  animation:rise .5s .14s ease both;
+}
+.panel-head{
+  font-size:.72rem;
+  text-transform:uppercase;
+  letter-spacing:.09em;
+  color:var(--text-tertiary);
+  margin:2px 3px 10px;
+}
+.weeks-grid{
+  display:grid;
+  grid-template-columns:1fr;
+  gap:8px;
+  max-height:62vh;
+  overflow:auto;
+  padding-right:2px;
+}
+.weeks-grid::-webkit-scrollbar{width:8px}
+.weeks-grid::-webkit-scrollbar-thumb{
+  background:#c5d8d2;
+  border-radius:999px;
+}
+.wk{
+  background:linear-gradient(180deg,#ffffff 0%,#f7fbfa 100%);
+  border:1px solid var(--border);
+  border-radius:12px;
+  padding:11px;
+  cursor:pointer;
+  transition:transform .2s ease,border-color .2s ease,box-shadow .2s ease,background .2s ease;
+  animation:cardIn .38s ease both;
+  animation-delay:calc(var(--i) * 18ms);
+}
+.wk:hover{
+  transform:translateY(-2px);
+  border-color:#9fbcb5;
+  box-shadow:0 14px 26px -24px rgba(16,67,58,.9);
+}
+.wk.active{
+  border-color:var(--border-strong);
+  background:linear-gradient(130deg,#effaf7 0%,#fff8ef 100%);
+  box-shadow:0 16px 28px -26px rgba(16,67,58,.95);
+}
+.wk-num{
+  font-size:.64rem;
+  color:var(--text-tertiary);
+  text-transform:uppercase;
+  letter-spacing:.08em;
+  margin-bottom:4px;
+}
+.wk-title{
+  font-size:.84rem;
+  font-weight:700;
+  color:var(--text-primary);
+  line-height:1.32;
+}
+.wk-meta{
+  margin-top:6px;
+  display:flex;
+  flex-wrap:wrap;
+  gap:6px;
+  align-items:center;
+}
+.phase-chip{
+  font-size:.64rem;
+  padding:3px 8px;
+  border-radius:999px;
+  font-weight:700;
+  letter-spacing:.02em;
+}
+.wk-total{
+  font-size:.66rem;
+  color:var(--text-secondary);
+}
+.wk-badges{
+  display:flex;
+  gap:4px;
+  margin-top:8px;
+  flex-wrap:wrap;
+}
+.badge{
+  font-size:.63rem;
+  font-weight:700;
+  padding:2px 7px;
+  border-radius:999px;
+  border:1px solid transparent;
+}
+.badge.e{background:#e8f6df;color:#376714;border-color:#b8d99f}
+.badge.m{background:#fff0df;color:#8a4f08;border-color:#f2cc9d}
+.badge.h{background:#fde7e7;color:#a52b2b;border-color:#efb4b4}
+
+.detail{
+  background:var(--bg-surface);
+  border:1px solid var(--border);
+  border-radius:18px;
+  padding:1.15rem;
+  animation:rise .5s .2s ease both;
+}
+.detail-head{margin-bottom:.85rem}
+.detail-kicker{
+  font-size:.68rem;
+  color:var(--text-tertiary);
+  text-transform:uppercase;
+  letter-spacing:.08em;
+  margin-bottom:5px;
+}
+.detail-title{
+  font-family:"Space Grotesk","Trebuchet MS",sans-serif;
+  font-size:1.22rem;
+  font-weight:700;
+  color:var(--text-primary);
+}
+.detail-sub{
+  font-size:.82rem;
+  color:var(--text-secondary);
+  margin-top:8px;
+  display:flex;
+  flex-wrap:wrap;
+  gap:6px;
+  align-items:center;
+}
+.meta-pill{
+  font-size:.71rem;
+  padding:3px 8px;
+  border-radius:999px;
+  background:var(--bg-muted);
+  border:1px solid #dbe8e5;
+  color:#3e5851;
+}
+.session{
+  background:linear-gradient(135deg,#f5fbf9 0%,#f9faf4 100%);
+  padding:13px 14px;
+  margin-bottom:1rem;
+  border:1px solid #d7e8e2;
+  border-radius:14px;
+}
+.session h3{
+  font-size:.65rem;
+  text-transform:uppercase;
+  letter-spacing:.09em;
+  color:var(--text-tertiary);
+  margin-bottom:6px;
+}
+.session p{
+  font-size:.9rem;
+  color:var(--text-primary);
+  line-height:1.6;
+}
+
+.prob-header{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  gap:8px;
+  margin-bottom:8px;
+  flex-wrap:wrap;
+}
+.prob-header h3{
+  font-size:.7rem;
+  text-transform:uppercase;
+  letter-spacing:.09em;
+  color:var(--text-tertiary);
+}
+.filters{
+  display:flex;
+  gap:6px;
+  flex-wrap:wrap;
+}
+.fbtn{
+  font-size:.72rem;
+  padding:5px 10px;
+  border:1px solid #cfdfdb;
+  border-radius:999px;
+  background:#fff;
+  cursor:pointer;
+  color:#4a625c;
+  font-family:"DM Sans","Segoe UI",sans-serif;
+  transition:all .16s ease;
+}
+.fbtn:hover{border-color:#92b7af;color:#1f4f49}
+.fbtn.aa{background:#e9f4f1;color:#104940;border-color:#9ec5bd}
+.fbtn.ae{background:#e8f6df;color:#376714;border-color:#9bc078}
+.fbtn.am{background:#fff0df;color:#8a4f08;border-color:#e7bd88}
+.fbtn.ah{background:#fde7e7;color:#a52b2b;border-color:#e7adad}
+
+.probs{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:7px;
+}
+.prob{
+  display:flex;
+  align-items:center;
+  gap:7px;
+  padding:7px 9px;
+  border-radius:10px;
+  font-size:.83rem;
+  border:1px solid var(--border);
+  background:linear-gradient(180deg,#ffffff 0%,#fbfefd 100%);
+  transition:transform .15s ease,border-color .15s ease;
+}
+.prob:hover{
+  transform:translateX(2px);
+  border-color:#aac8c1;
+}
+.dot{
+  width:8px;
+  height:8px;
+  border-radius:50%;
+  flex-shrink:0;
+}
+.dot.E{background:#639922}
+.dot.M{background:#ba7517}
+.dot.H{background:#e24b4a}
+.prob a{
+  color:var(--text-primary);
+  text-decoration:none;
+  line-height:1.3;
+  flex:1;
+  font-weight:500;
+}
+.prob a:hover{
+  color:#0d6d65;
+  text-decoration:underline;
+}
+.prob-level{
+  font-size:.61rem;
+  font-weight:700;
+  padding:2px 6px;
+  border-radius:999px;
+  border:1px solid transparent;
+}
+.prob-level.E{background:#e8f6df;color:#376714;border-color:#b8d99f}
+.prob-level.M{background:#fff0df;color:#8a4f08;border-color:#f2cc9d}
+.prob-level.H{background:#fde7e7;color:#a52b2b;border-color:#efb4b4}
+
+@media (max-width:1060px){
+  .content-layout{grid-template-columns:1fr}
+  .weeks-grid{
+    grid-template-columns:1fr 1fr;
+    max-height:none;
+    overflow:visible;
+  }
+}
+@media (max-width:760px){
+  .root{padding:.85rem}
+  .header{
+    padding:13px 14px;
+    align-items:flex-start;
+    flex-direction:column;
+  }
+  .stats-row{grid-template-columns:1fr 1fr}
+  .weeks-grid{grid-template-columns:1fr}
+  .probs{grid-template-columns:1fr}
+}
+@media (prefers-reduced-motion:reduce){
+  *,*::before,*::after{
+    animation:none !important;
+    transition:none !important;
+  }
+}
+@keyframes rise{
+  from{opacity:0;transform:translateY(12px)}
+  to{opacity:1;transform:translateY(0)}
+}
+@keyframes cardIn{
+  from{opacity:0;transform:translateY(8px) scale(.99)}
+  to{opacity:1;transform:translateY(0) scale(1)}
+}
+</style>
+<div class="root">
+<div class="header">
+  <div>
+    <h1>DSA Placement Roadmap — 15 Weeks</h1>
+    <p>2 hrs/week at college · 50 problems/week for home practice · ~750 problems total</p>
+  </div>
+  <div class="header-tag">Focused Sprint Plan</div>
+</div>
+<div class="stats-row">
+  <div class="stat"><div class="stat-num">15</div><div class="stat-label">Weeks</div></div>
+  <div class="stat"><div class="stat-num">750</div><div class="stat-label">Problems</div></div>
+  <div class="stat"><div class="stat-num">30h</div><div class="stat-label">College hrs</div></div>
+  <div class="stat"><div class="stat-num">12</div><div class="stat-label">Core topics</div></div>
+</div>
+<div class="content-layout">
+  <div class="weeks-panel">
+    <div class="panel-head">Choose your active week</div>
+    <div class="weeks-grid" id="wg"></div>
+  </div>
+  <div class="detail" id="dp"></div>
+</div>
+</div>
+<script>
+function slug(name){
+  return name.toLowerCase()
+    .replace(/[^a-z0-9\s-]/g,'')
+    .trim().replace(/\s+/g,'-')
+    .replace(/-+/g,'-');
+}
+function lc(name){ return 'https://leetcode.com/problems/'+slug(name)+'/'; }
+
+const phases={
+  "Foundation":{bg:"#e6f1fb",c:"#185fa5"},
+  "Core Structures":{bg:"#faeeda",c:"#854f0b"},
+  "Trees & Graphs":{bg:"#eaf3de",c:"#3b6d11"},
+  "Dynamic Programming":{bg:"#fbeaf0",c:"#993556"},
+  "Advanced Topics":{bg:"#eeedfe",c:"#534ab7"},
+  "Placement Prep":{bg:"#fcebeb",c:"#a32d2d"},
+};
+
+const W=[
+  {t:"Arrays & Strings — Fundamentals",ph:"Foundation",
+   s:"Cover: array traversal, prefix sums, string manipulation, ASCII tricks. Practice: find max/min, reverse array, check palindrome. Explain time/space complexity basics. Assign problems 1–15 as daily targets (3/day).",
+   p:[["Two Sum","E"],["Best Time to Buy and Sell Stock","E"],["Contains Duplicate","E"],["Maximum Subarray","M"],["Product of Array Except Self","M"],["Find Pivot Index","E"],["Running Sum of 1d Array","E"],["Shuffle the Array","E"],["Concatenation of Array","E"],["Kids With the Greatest Number of Candies","E"],["Richest Customer Wealth","E"],["Number of Good Pairs","E"],["Defanging an IP Address","E"],["Check if Two String Arrays are Equivalent","E"],["Jewels and Stones","E"],["Valid Anagram","E"],["Reverse String","E"],["First Unique Character in a String","E"],["Reverse Words in a String III","E"],["Length of Last Word","E"],["Longest Common Prefix","E"],["Count and Say","M"],["Roman to Integer","E"],["Palindrome Number","E"],["Is Subsequence","E"],["Move Zeroes","E"],["Remove Duplicates from Sorted Array","E"],["Remove Element","E"],["Replace Elements with Greatest Element on Right Side","E"],["Check if Array Is Sorted and Rotated","E"],["Sum of Unique Elements","E"],["Find Numbers with Even Number of Digits","E"],["Squares of a Sorted Array","E"],["Matrix Diagonal Sum","E"],["Lucky Numbers in a Matrix","E"],["Find the Difference","E"],["Single Number","E"],["Majority Element","E"],["Pascals Triangle","E"],["Pascals Triangle II","E"],["Search Insert Position","E"],["Merge Sorted Array","E"],["Plus One","E"],["Rotate Array","M"],["Set Matrix Zeroes","M"],["Spiral Matrix","M"],["Rotate Image","M"],["Group Anagrams","M"],["Longest Substring Without Repeating Characters","M"],["Subarray Sum Equals K","M"]]},
+  {t:"Two Pointers & Sliding Window",ph:"Foundation",
+   s:"Cover: two-pointer technique (left/right), fast/slow pointers, fixed-window vs variable-window sliding window. Solve 3Sum live on board. Emphasise when each pattern applies.",
+   p:[["Valid Palindrome","E"],["Two Sum II Input Array Is Sorted","M"],["3Sum","M"],["Container With Most Water","M"],["Trapping Rain Water","H"],["Minimum Size Subarray Sum","M"],["Maximum Average Subarray I","E"],["Longest Substring Without Repeating Characters","M"],["Fruit Into Baskets","M"],["Max Consecutive Ones III","M"],["Permutation in String","M"],["Find All Anagrams in a String","M"],["Minimum Window Substring","H"],["Sliding Window Maximum","H"],["Repeated DNA Sequences","M"],["4Sum","M"],["3Sum Closest","M"],["Remove Duplicates from Sorted Array II","M"],["Sort Colors","M"],["Partition Labels","M"],["Boats to Save People","M"],["Longest Mountain in Array","M"],["Subarray Product Less Than K","M"],["Number of Subarrays with Bounded Maximum","M"],["Count Number of Nice Subarrays","M"],["Longest Repeating Character Replacement","M"],["Binary Subarrays With Sum","M"],["K Radius Subarray Averages","M"],["Valid Palindrome II","E"],["Reverse Vowels of a String","E"],["Merge Strings Alternately","E"],["Remove Nth Node From End of List","M"],["Linked List Cycle","E"],["Middle of the Linked List","E"],["Happy Number","E"],["Find the Duplicate Number","M"],["Minimum Difference Between Highest and Lowest of K Scores","E"],["Maximum Number of Vowels in a Substring of Given Length","M"],["Find K Closest Elements","M"],["Longest Turbulent Subarray","M"],["Shortest Subarray with Sum at Least K","H"],["Subarrays with K Different Integers","H"],["Count Subarrays With Fixed Bounds","H"],["Grumpy Bookstore Owner","M"],["Jump Game","M"],["Maximum Points You Can Obtain from Cards","M"],["Number of Sub-arrays of Size K and Average Greater than or Equal to Threshold","M"],["Minimum Operations to Reduce X to Zero","M"],["Longest Subarray of 1s After Deleting One Element","M"],["Maximize the Confusion of an Exam","M"]]},
+  {t:"Hashing — Maps & Sets",ph:"Foundation",
+   s:"Cover: HashMap vs HashSet use cases, collision basics, frequency counting, two-sum pattern, prefix sum + hash. Demo: LRU Cache concept. Explain O(1) average ops.",
+   p:[["Two Sum","E"],["Valid Anagram","E"],["Contains Duplicate","E"],["Group Anagrams","M"],["Top K Frequent Elements","M"],["Encode and Decode TinyURL","M"],["Design HashMap","E"],["Design HashSet","E"],["Isomorphic Strings","E"],["Word Pattern","E"],["Ransom Note","E"],["Intersection of Two Arrays","E"],["Intersection of Two Arrays II","E"],["Happy Number","E"],["Single Number","E"],["First Unique Character in a String","E"],["Find the Difference","E"],["Unique Number of Occurrences","E"],["Number of Pairs of Interchangeable Rectangles","M"],["Number of Good Pairs","E"],["Sum of Unique Elements","E"],["Subarray Sum Equals K","M"],["Continuous Subarray Sum","M"],["Contiguous Array","M"],["Longest Consecutive Sequence","M"],["4Sum II","M"],["Count Good Meals","M"],["Check if a String Contains All Binary Codes of Size K","M"],["Maximum Size Subarray Sum Equals k","M"],["Pairs of Songs With Total Durations Divisible by 60","M"],["LRU Cache","M"],["Insert Delete GetRandom O1","M"],["Random Pick Index","M"],["Snapshot Array","M"],["Design Underground System","M"],["Time Based Key-Value Store","M"],["First Missing Positive","H"],["Majority Element","E"],["Find All Duplicates in an Array","M"],["Find All Numbers Disappeared in an Array","E"],["Kth Largest Element in a Stream","E"],["Daily Temperatures","M"],["Task Scheduler","M"],["Find Duplicate File in System","M"],["Employee Importance","M"],["Count Number of Bad Pairs","M"],["Equal Row and Column Pairs","M"],["Determine if Two Strings Are Close","M"],["Find the Longest Substring Containing Vowels in Even Counts","M"],["Number of Subarrays with Bounded Maximum","M"]]},
+  {t:"Linked Lists",ph:"Foundation",
+   s:"Cover: singly vs doubly LL, node structure, slow-fast pointer tricks, dummy node pattern. Live code: reverse a LL, detect cycle. Emphasise drawing pointers before coding.",
+   p:[["Reverse Linked List","E"],["Merge Two Sorted Lists","E"],["Linked List Cycle","E"],["Middle of the Linked List","E"],["Palindrome Linked List","E"],["Remove Linked List Elements","E"],["Delete Node in a Linked List","M"],["Intersection of Two Linked Lists","E"],["Convert Binary Number in a Linked List to Integer","E"],["Remove Duplicates from Sorted List","E"],["Remove Duplicates from Sorted List II","M"],["Add Two Numbers","M"],["Add Two Numbers II","M"],["Odd Even Linked List","M"],["Reorder List","M"],["Remove Nth Node From End of List","M"],["Swapping Nodes in a Linked List","M"],["Rotate List","M"],["Partition List","M"],["Sort List","M"],["Insertion Sort List","M"],["Reverse Linked List II","M"],["Flatten a Multilevel Doubly Linked List","M"],["Copy List with Random Pointer","M"],["LRU Cache","M"],["Design Linked List","M"],["Swap Nodes in Pairs","M"],["Reverse Nodes in k-Group","H"],["Merge k Sorted Lists","H"],["Find the Duplicate Number","M"],["Linked List Cycle II","M"],["Split Linked List in Parts","M"],["Next Greater Node In Linked List","M"],["Convert Sorted List to Binary Search Tree","M"],["Flatten Binary Tree to Linked List","M"],["Delete the Middle Node of a Linked List","M"],["Maximum Twin Sum of a Linked List","M"],["Merge In Between Linked Lists","M"],["Design Browser History","M"],["My Calendar I","M"],["My Calendar II","M"],["Number of Recent Calls","E"],["Design Circular Queue","M"],["Design Circular Deque","M"],["Design a Stack With Increment Operation","M"],["Implement Stack using Queues","E"],["Implement Queue using Stacks","E"],["Reverse Nodes In Even Length Groups","M"],["Rotate Array","M"],["Spiral Matrix","M"]]},
+  {t:"Stacks & Queues",ph:"Core Structures",
+   s:"Cover: stack (LIFO), queue (FIFO), monotonic stack pattern, deque. Solve: valid parentheses, next greater element, daily temperatures live. Discuss real-world use: function call stack, BFS queue.",
+   p:[["Valid Parentheses","E"],["Min Stack","M"],["Evaluate Reverse Polish Notation","M"],["Daily Temperatures","M"],["Next Greater Element I","E"],["Next Greater Element II","M"],["Online Stock Span","M"],["Largest Rectangle in Histogram","H"],["Maximal Rectangle","H"],["Remove Duplicate Letters","M"],["Decode String","M"],["Flatten Nested List Iterator","M"],["Number of Visible People in a Queue","H"],["Asteroid Collision","M"],["Remove K Digits","M"],["132 Pattern","M"],["Car Fleet","M"],["Simplify Path","M"],["Basic Calculator","H"],["Basic Calculator II","M"],["Implement Stack using Queues","E"],["Implement Queue using Stacks","E"],["Design Circular Queue","M"],["Design Circular Deque","M"],["Sliding Window Maximum","H"],["Jump Game VI","M"],["Shortest Subarray with Sum at Least K","H"],["Find the Most Competitive Subsequence","M"],["Maximum Width Ramp","M"],["Sum of Subarray Minimums","M"],["Number of Atoms","H"],["Score of Parentheses","M"],["Minimum Remove to Make Valid Parentheses","M"],["Check if a Parentheses String Can Be Valid","M"],["Minimum Add to Make Parentheses Valid","M"],["Longest Valid Parentheses","H"],["Make the String Great","E"],["Backspace String Compare","E"],["Build an Array With Stack Operations","E"],["Remove All Adjacent Duplicates In String","E"],["Remove All Adjacent Duplicates in String II","M"],["Maximum Score of a Good Subarray","H"],["Minimum Number of Swaps to Make the String Balanced","M"],["Task Scheduler","M"],["Design a Food Rating System","M"],["Stock Price Fluctuation","M"],["Design Hit Counter","M"],["Number of Recent Calls","E"],["Moving Average from Data Stream","E"],["Maximum Frequency Stack","H"]]},
+  {t:"Binary Search",ph:"Core Structures",
+   s:"Cover: classic binary search template (lo/hi/mid), search on answer technique, rotated arrays. Solve: search in rotated sorted array + koko eating bananas live. Emphasize invariant maintenance.",
+   p:[["Binary Search","E"],["Search Insert Position","E"],["First Bad Version","E"],["Sqrtx","E"],["Count Negative Numbers in a Sorted Matrix","E"],["Find Smallest Letter Greater Than Target","E"],["Guess Number Higher or Lower","E"],["Search a 2D Matrix","M"],["Search a 2D Matrix II","M"],["Find Minimum in Rotated Sorted Array","M"],["Find Minimum in Rotated Sorted Array II","H"],["Search in Rotated Sorted Array","M"],["Search in Rotated Sorted Array II","M"],["Find Peak Element","M"],["Find K Closest Elements","M"],["Koko Eating Bananas","M"],["Minimum Speed to Arrive on Time","M"],["Capacity To Ship Packages Within D Days","M"],["Minimum Number of Days to Make m Bouquets","M"],["Magnetic Force Between Two Balls","M"],["Split Array Largest Sum","H"],["Find the Smallest Divisor Given a Threshold","M"],["Time Based Key-Value Store","M"],["Peak Index in a Mountain Array","M"],["Find in Mountain Array","H"],["Median of Two Sorted Arrays","H"],["Find Median from Data Stream","H"],["Kth Largest Element in an Array","M"],["Kth Smallest Element in a Sorted Matrix","M"],["Find K-th Smallest Pair Distance","H"],["Longest Increasing Subsequence","M"],["Russian Doll Envelopes","H"],["Single Element in a Sorted Array","M"],["Missing Number","E"],["Missing Element in Sorted Array","M"],["H-Index","M"],["H-Index II","M"],["Arranging Coins","E"],["Valid Perfect Square","E"],["Successful Pairs of Spells and Potions","M"],["Maximum Number of Tasks You Can Assign","H"],["Minimum Time to Complete Trips","M"],["Minimum Eating Speed","M"],["Minimum Time to Repair Cars","M"],["Plate Between Candles","M"],["Snapshot Array","M"],["Count Vowel Substrings of a String","E"],["Find Right Interval","M"],["Random Pick with Weight","M"],["Maximum Value at a Given Index in a Bounded Array","M"]]},
+  {t:"Recursion & Backtracking",ph:"Core Structures",
+   s:"Cover: recursion tree, base cases, backtracking template (choose/explore/unchoose). Solve: subsets, permutations live. Discuss pruning techniques. Show call-stack diagram.",
+   p:[["Subsets","M"],["Subsets II","M"],["Permutations","M"],["Permutations II","M"],["Combinations","M"],["Combination Sum","M"],["Combination Sum II","M"],["Combination Sum III","M"],["Palindrome Partitioning","M"],["Letter Combinations of a Phone Number","M"],["Generate Parentheses","M"],["Word Search","M"],["N-Queens","H"],["N-Queens II","H"],["Sudoku Solver","H"],["Restore IP Addresses","M"],["Gray Code","M"],["Unique Paths III","H"],["Partition to K Equal Sum Subsets","M"],["Maximum Length of a Concatenated String with Unique Characters","M"],["Count Number of Maximum Bitwise-OR Subsets","M"],["Find Unique Binary String","M"],["Letter Case Permutation","M"],["Matchsticks to Square","M"],["Remove Invalid Parentheses","H"],["Expression Add Operators","H"],["Word Break II","H"],["Beautiful Arrangement","M"],["Splitting a String Into Descending Consecutive Values","M"],["Climbing Stairs","E"],["Fibonacci Number","E"],["Power of Two","E"],["Power of Three","E"],["Power of Four","E"],["Powx n","M"],["The k-th Lexicographic String of All Happy Strings of Length n","M"],["Find All Possible Recipes from Given Supplies","M"],["Count All Valid Pickup and Delivery Options","H"],["Decode Ways","M"],["Decode Ways II","H"],["Regular Expression Matching","H"],["Wildcard Matching","H"],["Word Ladder","H"],["Word Ladder II","H"],["Flood Fill","E"],["Number of Islands","M"],["All Paths From Source to Target","M"],["Combination Sum IV","M"],["Count Sorted Vowel Strings","M"],["Zuma Game","H"]]},
+  {t:"Trees — Traversal & Structure",ph:"Trees & Graphs",
+   s:"Cover: binary tree node structure, DFS (inorder/preorder/postorder), BFS (level order), height/depth/diameter. Live code: max depth, level order traversal, symmetric tree. Draw recursion trees.",
+   p:[["Maximum Depth of Binary Tree","E"],["Minimum Depth of Binary Tree","E"],["Symmetric Tree","E"],["Invert Binary Tree","E"],["Same Tree","E"],["Subtree of Another Tree","E"],["Leaf-Similar Trees","E"],["Count Good Nodes in Binary Tree","M"],["Path Sum","E"],["Path Sum II","M"],["Path Sum III","M"],["Binary Tree Maximum Path Sum","H"],["Diameter of Binary Tree","E"],["Balanced Binary Tree","E"],["Binary Tree Level Order Traversal","M"],["Binary Tree Level Order Traversal II","M"],["Binary Tree Zigzag Level Order Traversal","M"],["Average of Levels in Binary Tree","E"],["Maximum Width of Binary Tree","M"],["Binary Tree Right Side View","M"],["Populating Next Right Pointers in Each Node","M"],["Populating Next Right Pointers in Each Node II","M"],["Cousins in Binary Tree","E"],["Merge Two Binary Trees","E"],["Sum of Left Leaves","E"],["Find Bottom Left Tree Value","M"],["Flatten Binary Tree to Linked List","M"],["Construct Binary Tree from Preorder and Inorder Traversal","M"],["Construct Binary Tree from Inorder and Postorder Traversal","M"],["Serialize and Deserialize Binary Tree","H"],["Binary Tree Cameras","H"],["Distribute Coins in Binary Tree","M"],["All Nodes Distance K in Binary Tree","M"],["Lowest Common Ancestor of a Binary Tree","M"],["Maximum Difference Between Node and Ancestor","M"],["Count Nodes Equal to Average of Subtree","M"],["Deepest Leaves Sum","M"],["Time Needed to Inform All Employees","M"],["Vertical Order Traversal of a Binary Tree","H"],["Find Duplicate Subtrees","M"],["House Robber III","M"],["Delete Nodes And Return Forest","M"],["Step-By-Step Directions From a Binary Tree Node to Another","M"],["Amount of Time for Binary Tree to Be Infected","M"],["Longest ZigZag Path in a Binary Tree","M"],["Number of Good Leaf Nodes Pairs","M"],["Check Completeness of a Binary Tree","M"],["Recover a Tree From Preorder Traversal","H"],["Sum of Distances in Tree","H"],["Count Nodes in Complete Binary Tree","M"]]},
+  {t:"BST + Heaps & Priority Queues",ph:"Trees & Graphs",
+   s:"Cover: BST properties (inorder = sorted), insert/delete/search. Heaps: min-heap, max-heap, heapify. Top-K pattern. Solve: kth largest, merge k sorted lists, task scheduler live.",
+   p:[["Validate Binary Search Tree","M"],["Kth Smallest Element in a BST","M"],["Lowest Common Ancestor of a Binary Search Tree","M"],["Convert Sorted Array to Binary Search Tree","E"],["Convert Sorted List to Binary Search Tree","M"],["Search in a Binary Search Tree","E"],["Insert into a Binary Search Tree","M"],["Delete Node in a BST","M"],["Recover Binary Search Tree","M"],["Trim a Binary Search Tree","M"],["Range Sum of BST","E"],["Balance a Binary Search Tree","M"],["Binary Search Tree to Greater Sum Tree","M"],["Two Sum IV Input is a BST","E"],["Unique Binary Search Trees","M"],["Unique Binary Search Trees II","M"],["Closest Binary Search Tree Value","E"],["Kth Largest Element in an Array","M"],["Top K Frequent Elements","M"],["Top K Frequent Words","M"],["K Closest Points to Origin","M"],["Find K Pairs with Smallest Sums","M"],["Merge k Sorted Lists","H"],["Find Median from Data Stream","H"],["Sliding Window Median","H"],["IPO","H"],["Maximum Subsequence Score","M"],["Single-Threaded CPU","M"],["Process Tasks Using Servers","M"],["Seat Reservation Manager","M"],["Minimum Cost to Connect Sticks","M"],["Last Stone Weight","E"],["Last Stone Weight II","M"],["Furthest Building You Can Reach","M"],["Minimum Number of Refueling Stops","H"],["Car Pooling","M"],["Meeting Rooms II","M"],["Reorganize String","M"],["Task Scheduler","M"],["Find the Kth Largest Integer in the Array","M"],["Design Twitter","M"],["Kth Largest Element in a Stream","E"],["Smallest Number in Infinite Set","M"],["Total Cost to Hire K Workers","M"],["Maximum Average Pass Ratio","M"],["Maximum Performance of a Team","H"],["Minimum Cost to Hire K Workers","H"],["Rearrange String k Distance Apart","H"],["K-th Smallest Prime Fraction","H"],["Swim in Rising Water","H"]]},
+  {t:"Graphs — BFS & DFS",ph:"Trees & Graphs",
+   s:"Cover: adjacency list/matrix, BFS (shortest path, level-by-level), DFS (connectivity, cycle detection). Solve: number of islands, clone graph, course schedule live. Emphasise visited set.",
+   p:[["Number of Islands","M"],["Clone Graph","M"],["Course Schedule","M"],["Course Schedule II","M"],["Number of Connected Components in an Undirected Graph","M"],["Graph Valid Tree","M"],["Pacific Atlantic Water Flow","M"],["Surrounded Regions","M"],["Word Ladder","H"],["Word Ladder II","H"],["Minimum Genetic Mutation","H"],["Open the Lock","M"],["Rotting Oranges","M"],["01 Matrix","M"],["Walls and Gates","M"],["Shortest Path in Binary Matrix","M"],["Shortest Bridge","M"],["As Far from Land as Possible","M"],["Snakes and Ladders","M"],["Jump Game III","M"],["Jump Game IV","H"],["Jump Game VII","M"],["All Paths From Source to Target","M"],["Find if Path Exists in Graph","E"],["Reachable Nodes With Restrictions","M"],["Count Unreachable Pairs of Nodes in an Undirected Graph","M"],["Number of Provinces","M"],["Find the Town Judge","E"],["Find Center of Star Graph","E"],["Find Eventual Safe States","M"],["Keys and Rooms","M"],["Is Graph Bipartite","M"],["Possible Bipartition","M"],["Redundant Connection","M"],["Number of Operations to Make Network Connected","M"],["Accounts Merge","M"],["Making a Large Island","H"],["Max Area of Island","M"],["Flood Fill","E"],["Count Sub Islands","M"],["Map of Highest Peak","M"],["Minimum Time to Collect All Apples in a Tree","M"],["Reconstruct Itinerary","H"],["Evaluate Division","M"],["Minimum Height Trees","M"],["Loud and Rich","M"],["Parallel Courses","M"],["Nearest Exit from Entrance in Maze","M"],["Time Needed to Inform All Employees","M"],["Number of Ways to Arrive at Destination","M"]]},
+  {t:"Graphs — Advanced (Dijkstra, Union-Find, Topo)",ph:"Trees & Graphs",
+   s:"Cover: Dijkstra's algorithm (min-heap), Bellman-Ford, Union-Find (path compression + rank), topological sort (Kahn's BFS). Solve: network delay time, cheapest flights, redundant connection live.",
+   p:[["Network Delay Time","M"],["Cheapest Flights Within K Stops","M"],["Path With Minimum Effort","M"],["Path With Maximum Probability","M"],["Swim in Rising Water","H"],["Find the City With the Smallest Number of Neighbors at a Threshold Distance","M"],["Minimum Cost to Reach Destination in Time","H"],["Shortest Path in a Grid with Obstacles Elimination","H"],["Minimum Weighted Subgraph With the Required Paths","H"],["Second Minimum Node In a Graph","M"],["Number of Ways to Arrive at Destination","M"],["Redundant Connection","M"],["Redundant Connection II","H"],["Accounts Merge","M"],["Number of Operations to Make Network Connected","M"],["Satisfiability of Equality Equations","M"],["Smallest String With Swaps","M"],["Checking Existence of Edge Length Limited Paths","H"],["Number of Islands II","H"],["Minimize Hamming Distance After Swap Operations","M"],["Course Schedule","M"],["Course Schedule II","M"],["Course Schedule IV","M"],["Alien Dictionary","H"],["Sequence Reconstruction","M"],["Sort Items by Groups Respecting Dependencies","H"],["Minimum Number of Vertices to Reach All Nodes","M"],["Parallel Courses","M"],["Parallel Courses III","H"],["Find All Possible Recipes from Given Supplies","M"],["Build a Matrix With Conditions","H"],["Longest Increasing Path in a Matrix","H"],["Critical Connections in a Network","H"],["Number of Good Paths","H"],["Min Cost to Connect All Points","M"],["Find Critical and Pseudo-Critical Edges in Minimum Spanning Tree","H"],["Remove Max Number of Edges to Keep Graph Fully Traversable","H"],["Minimum Score of a Path Between Two Cities","M"],["Reorder Routes to Make All Paths Lead to the City Zero","M"],["Restore the Array From Adjacent Pairs","M"],["Maximum Students Taking Exam","H"],["Minimum Cost to Make at Least One Valid Path in a Grid","H"],["Shortest Path Visiting All Nodes","H"],["Optimize Water Distribution in a Village","H"],["Connecting Cities With Minimum Cost","M"],["Count Ways to Build Rooms in an Ant Colony","H"],["Largest Component Size by Common Factor","H"],["Bus Routes","H"],["Minimum Number of Days to Disconnect Island","H"],["Graph Connectivity With Threshold","H"]]},
+  {t:"Dynamic Programming — 1D",ph:"Dynamic Programming",
+   s:"Cover: memoization (top-down) vs tabulation (bottom-up), overlapping subproblems, optimal substructure. Solve: fibonacci → climbing stairs → house robber → coin change live. Build intuition for dp[] definition.",
+   p:[["Climbing Stairs","E"],["Fibonacci Number","E"],["N-th Tribonacci Number","E"],["Min Cost Climbing Stairs","E"],["House Robber","M"],["House Robber II","M"],["House Robber III","M"],["Delete and Earn","M"],["Jump Game","M"],["Jump Game II","M"],["Coin Change","M"],["Coin Change II","M"],["Perfect Squares","M"],["Word Break","M"],["Decode Ways","M"],["Decode Ways II","H"],["Longest Increasing Subsequence","M"],["Number of Longest Increasing Subsequence","M"],["Russian Doll Envelopes","H"],["Maximum Length of Pair Chain","M"],["Longest Arithmetic Subsequence","M"],["Longest Arithmetic Subsequence of Given Difference","M"],["Wiggle Subsequence","M"],["Partition Array for Maximum Sum","M"],["Maximum Subarray","M"],["Maximum Sum Circular Subarray","M"],["Minimum Cost For Tickets","M"],["Count Ways To Build Good Strings","M"],["Number of Dice Rolls With Target Sum","M"],["Domino and Tromino Tiling","M"],["Student Attendance Record II","H"],["Paint House","M"],["Counting Bits","E"],["Single Number II","M"],["Combination Sum IV","M"],["Unique Paths","M"],["Min Path Sum","M"],["Triangle","M"],["Ugly Number II","M"],["Super Ugly Number","M"],["Count Sorted Vowel Strings","M"],["Count All Valid Pickup and Delivery Options","H"],["Restore the Array","H"],["Count Number of Texts","M"],["Number of Ways to Stay in the Same Place After Some Steps","H"],["Maximum Profit in Job Scheduling","H"],["Best Time to Buy and Sell Stock with Cooldown","M"],["Best Time to Buy and Sell Stock with Transaction Fee","M"],["Solving Questions With Brainpower","M"],["Count Ways to Build Rooms in an Ant Colony","H"]]},
+  {t:"Dynamic Programming — 2D & Intervals",ph:"Dynamic Programming",
+   s:"Cover: 2D DP table setup (LCS, edit distance, knapsack), interval DP (burst balloons), state machine DP. Solve: LCS and edit distance live. Show how to reconstruct solution.",
+   p:[["Unique Paths","M"],["Unique Paths II","M"],["Minimum Path Sum","M"],["Triangle","M"],["Maximal Square","M"],["Maximal Rectangle","H"],["Longest Common Subsequence","M"],["Edit Distance","H"],["Delete Operation for Two Strings","M"],["Shortest Common Supersequence","H"],["Interleaving String","H"],["Wildcard Matching","H"],["Regular Expression Matching","H"],["Distinct Subsequences","H"],["Uncrossed Lines","M"],["Coin Change II","M"],["Target Sum","M"],["Partition Equal Subset Sum","M"],["Last Stone Weight II","M"],["Ones and Zeroes","M"],["Profitable Schemes","H"],["Palindromic Substrings","M"],["Longest Palindromic Subsequence","M"],["Minimum Insertions to Make a String Palindrome","M"],["Minimum Deletions to Make String Balanced","M"],["Longest Palindromic Substring","M"],["Burst Balloons","H"],["Strange Printer","H"],["Remove Boxes","H"],["Minimum Cost to Cut a Stick","H"],["Zuma Game","H"],["Largest Divisible Subset","M"],["Arithmetic Slices II Subsequence","H"],["Number of Music Playlists","H"],["Count Vowels Permutation","H"],["Selling Pieces of Wood","H"],["Maximum Value of K Coins From Piles","H"],["Minimum Score Triangulation of Polygon","M"],["Minimum Cost Tree From Leaf Values","M"],["Maximum Profit in Job Scheduling","H"],["Number of Ways to Paint N 3 Grid","H"],["Best Time to Buy and Sell Stock III","H"],["Best Time to Buy and Sell Stock IV","H"],["Frog Jump","H"],["Stone Game","M"],["Stone Game II","M"],["Stone Game III","H"],["Stone Game IV","H"],["Count Increasing Quadruplets","H"],["Maximum Alternating Subsequence Sum","M"]]},
+  {t:"Greedy, Intervals & Bit Manipulation",ph:"Advanced Topics",
+   s:"Cover: greedy proof technique (exchange argument), interval scheduling (sort by end time), bit tricks (XOR, AND, OR, shift). Solve: meeting rooms II, jump game, single number III live.",
+   p:[["Jump Game","M"],["Jump Game II","M"],["Jump Game III","M"],["Gas Station","M"],["Candy","H"],["Task Scheduler","M"],["Meeting Rooms","E"],["Meeting Rooms II","M"],["Minimum Number of Arrows to Burst Balloons","M"],["Non-overlapping Intervals","M"],["Merge Intervals","M"],["Insert Interval","M"],["Partition Labels","M"],["Queue Reconstruction by Height","M"],["Assign Cookies","E"],["Lemonade Change","E"],["Maximum Units on a Truck","E"],["Boats to Save People","M"],["Two City Scheduling","M"],["Minimum Cost to Move Chips to The Same Position","E"],["Maximum Bags With Full Capacity of Rocks","M"],["Minimum Rounds to Complete All Tasks","M"],["Largest Number","M"],["Wiggle Sort II","M"],["Advantage Shuffle","M"],["Single Number","E"],["Single Number II","M"],["Single Number III","M"],["Number of 1 Bits","E"],["Reverse Bits","E"],["Power of Two","E"],["Counting Bits","E"],["Bitwise AND of Numbers Range","M"],["Sum of Two Integers","M"],["Missing Number","E"],["Find the Duplicate Number","M"],["Maximum XOR of Two Numbers in an Array","M"],["Subsets","M"],["Divide Two Integers","M"],["Minimum Flips to Make a OR b Equal to c","M"],["Reverse Integer","M"],["Total Hamming Distance","M"],["Find XOR Beauty of Array","M"],["Minimum Number of Operations to Make Array XOR Equal to K","M"],["XOR Queries of a Subarray","M"],["Minimum Bit Flips to Convert Number","E"],["Maximum Product of Word Lengths","M"],["UTF-8 Validation","M"],["Decode XORed Array","E"],["Minimize XOR","M"]]},
+  {t:"Mock Contest Week — Full Review",ph:"Placement Prep",
+   s:"Run a full mock OA: 3 problems in 90 minutes (Easy + Medium + Medium/Hard). Review solutions, time complexity discussions, code quality. Cover: system design intro, STAR framework, resume tips.",
+   p:[["Two Sum","E"],["Maximum Subarray","M"],["Trapping Rain Water","H"],["LRU Cache","M"],["Word Break II","H"],["Course Schedule II","M"],["Median of Two Sorted Arrays","H"],["Serialize and Deserialize Binary Tree","H"],["Sliding Window Maximum","H"],["Minimum Window Substring","H"],["Edit Distance","H"],["Burst Balloons","H"],["Regular Expression Matching","H"],["N-Queens","H"],["Alien Dictionary","H"],["Find Median from Data Stream","H"],["Merge k Sorted Lists","H"],["Word Ladder II","H"],["Longest Consecutive Sequence","M"],["Unique Paths","M"],["Coin Change","M"],["Jump Game II","M"],["Group Anagrams","M"],["Top K Frequent Elements","M"],["Meeting Rooms II","M"],["Number of Islands","M"],["Clone Graph","M"],["Pacific Atlantic Water Flow","M"],["Kth Largest Element in an Array","M"],["Rotate Image","M"],["Best Time to Buy and Sell Stock III","H"],["Maximum Product Subarray","M"],["Minimum Path Sum","M"],["Longest Palindromic Substring","M"],["Decode Ways","M"],["House Robber","M"],["Partition Equal Subset Sum","M"],["Network Delay Time","M"],["Min Cost to Connect All Points","M"],["Non-overlapping Intervals","M"],["Insert Interval","M"],["Search in Rotated Sorted Array","M"],["3Sum","M"],["Binary Tree Maximum Path Sum","H"],["Lowest Common Ancestor of a Binary Tree","M"],["Validate Binary Search Tree","M"],["Implement Trie Prefix Tree","M"],["Design Add and Search Words Data Structure","M"],["Word Search II","H"],["Palindrome Partitioning","M"]]}
+];
+
+let aw=0, af="all";
+
+function renderGrid(){
+  document.getElementById("wg").innerHTML=W.map((w,i)=>{
+    const pc=phases[w.ph];
+    const cnt={E:0,M:0,H:0};
+    w.p.forEach(p=>cnt[p[1]]++);
+    return `<div class="wk ${i===aw?'active':''}" style="--i:${i}" onclick="sel(${i})">
+      <div class="wk-num">Week ${i+1}</div>
+      <div class="wk-title">${w.t}</div>
+      <div class="wk-meta">
+        <span class="phase-chip" style="background:${pc.bg};color:${pc.c}">${w.ph}</span>
+        <span class="wk-total">${w.p.length} problems</span>
+      </div>
+      <div class="wk-badges">
+        <span class="badge e">${cnt.E}E</span>
+        <span class="badge m">${cnt.M}M</span>
+        <span class="badge h">${cnt.H}H</span>
+      </div>
+    </div>`;
+  }).join("");
+}
+
+function renderDetail(){
+  const w=W[aw];
+  const pc=phases[w.ph];
+  const cnt={E:0,M:0,H:0};
+  w.p.forEach(p=>cnt[p[1]]++);
+  const shown=af==="all"?w.p:w.p.filter(p=>p[1]===af);
+  document.getElementById("dp").innerHTML=`
+    <div class="detail-head">
+      <div class="detail-kicker">Week ${aw+1} / 15</div>
+      <div class="detail-title">${w.t}</div>
+      <div class="detail-sub">
+        <span class="phase-chip" style="background:${pc.bg};color:${pc.c}">${w.ph}</span>
+        <span class="meta-pill">${w.p.length} problems</span>
+        <span class="meta-pill">${cnt.E} Easy</span>
+        <span class="meta-pill">${cnt.M} Medium</span>
+        <span class="meta-pill">${cnt.H} Hard</span>
+      </div>
+    </div>
+    <div class="session">
+      <h3>2-hour college session</h3>
+      <p>${w.s}</p>
+    </div>
+    <div class="prob-header">
+      <h3>Home practice — 50 problems</h3>
+      <div class="filters">
+        <button class="fbtn ${af==='all'?'aa':''}" onclick="filt('all')">All</button>
+        <button class="fbtn ${af==='E'?'ae':''}" onclick="filt('E')">Easy</button>
+        <button class="fbtn ${af==='M'?'am':''}" onclick="filt('M')">Med</button>
+        <button class="fbtn ${af==='H'?'ah':''}" onclick="filt('H')">Hard</button>
+      </div>
+    </div>
+    <div class="probs">
+      ${shown.map(p=>`
+        <div class="prob">
+          <span class="dot ${p[1]}"></span>
+          <a href="${lc(p[0])}" target="_blank" rel="noopener">${p[0]}</a>
+          <span class="prob-level ${p[1]}">${p[1]}</span>
+        </div>`).join("")}
+    </div>`;
+}
+
+function sel(i){aw=i;af="all";renderGrid();renderDetail();}
+function filt(f){af=f;renderDetail();}
+
+renderGrid();renderDetail();
+</script>
